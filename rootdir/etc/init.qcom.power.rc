@@ -37,15 +37,29 @@ on enable-low-power
 
     # Enable governor for power cluster
     write /sys/devices/system/cpu/cpu0/online 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "zzmoove"
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 80
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1305600
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "691200:60 806400:80"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 400000
-    #write /sys/devices/system/cpu/cpu0/cpufreq/elementalx/active_floor_freq 806400
-    
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 59000
+
     # Enable governor for perf cluster
     write /sys/devices/system/cpu/cpu4/online 1
-    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "zzmoove"
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor "interactive"
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "19000 1382400:39000"
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 85
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1382400
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "85 1382400:90 1747200:80"
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 400000
-    #write /sys/devices/system/cpu/cpu4/cpufreq/elementalx/active_floor_freq 1056000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/sampling_down_factor 40000
+    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/max_freq_hysteresis 60000
 
     # HMP Task packing settings for 8956
     write /proc/sys/kernel/sched_small_task 30
@@ -100,11 +114,11 @@ on enable-low-power
 
     # set cpu_boost parameters
     write /sys/module/cpu_boost/parameters/input_boost_freq 0:1305600
-    write /sys/module/cpu_boost/parameters/input_boost_ms "30"
+    write /sys/module/cpu_boost/parameters/input_boost_ms "40"
     write /proc/sys/kernel/sched_upmigrate_min_nice 9
 
     # set (super) packing parameters
-    write /sys/devices/system/cpu/cpu0/sched_mostly_idle_freq 806400
+    write /sys/devices/system/cpu/cpu0/sched_mostly_idle_freq 1017600
     write /sys/devices/system/cpu/cpu4/sched_mostly_idle_freq 0
 
     # Enable adaptive LMK
@@ -112,10 +126,7 @@ on enable-low-power
     write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 81250
 
     chmod 0660 /sys/module/lowmemorykiller/parameters/minfree
-    write /sys/module/lowmemorykiller/parameters/minfree "2048,3072,11520,16640,24320,42240"
-
-	# Disable KSM by default
-	write /sys/kernel/mm/ksm/run "0"
+    write /sys/module/lowmemorykiller/parameters/minfree "14746,18432,22118,25805,40000,55000"
 
 on charger
     # Disable thermal
