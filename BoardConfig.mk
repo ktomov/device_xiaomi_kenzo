@@ -43,7 +43,7 @@ ENABLE_CPUSETS := true
 # Bootloader
 TARGET_BOOTLOADER_BOARD_NAME := MSM8952
 TARGET_NO_BOOTLOADER := true
-ad
+
 # Kernel
 BOARD_DTBTOOL_ARGS := -2
 BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1
